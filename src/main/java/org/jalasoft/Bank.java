@@ -68,7 +68,7 @@ public class Bank {
      */
     public boolean payInterest() {
         Set<Integer> accountIndetifiers = accounts.keySet();
-        double interestRate = 1;
+        double interestRate = 0.01;
         for (int indetifier : accountIndetifiers) {
             int balance = accounts.get(indetifier);
             int newbalance = (int) (balance * (1 + interestRate));
