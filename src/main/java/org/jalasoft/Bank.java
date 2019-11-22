@@ -68,7 +68,7 @@ public class Bank {
      */
     public boolean payInterest() {
         Set<Integer> accountIndetifiers = accounts.keySet();
-        double interestRate = 0.01;
+        double interestRate = 1;
         for (int indetifier : accountIndetifiers) {
             int balance = accounts.get(indetifier);
             int newbalance = (int) (balance * (1 + interestRate));
@@ -80,12 +80,12 @@ public class Bank {
     @Override
     public String toString() {
         Set<Integer> accountIndetifiers = accounts.keySet();
-        String message;
-        message = "The bank has " + accountIndetifiers.size() + " accounts.";
+        StringBuilder message = new StringBuilder();
+        message.append("The bank has " + accountIndetifiers.size() + " accounts.");
         for (int indentifier : accountIndetifiers) {
-            message = message +  "\tAccount " + indentifier + ": balance=" + accounts.get(indentifier);
+            message.append("\tAccount " + indentifier + ": balance=" + accounts.get(indentifier));
         }
             
-        return message;
+        return message.toString();
     }
 }
