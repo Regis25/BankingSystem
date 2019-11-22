@@ -1,10 +1,16 @@
 package org.jalasoft;
 
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Bank
  */
 public class Bank {
+    private int current;
+    private int nextAccount;
 
+    private HashMap<Integer, Integer> accounts = new HashMap<>();
     
     /**
      * Create a new account and assign it an account number and sets the balance to 0
@@ -12,12 +18,9 @@ public class Bank {
      * @return the account number
      */
     public int newAccount() {
-        /*
         current = nextAccount++;
         accounts.put(current, 0);
-        System.out.println("Your new account number is " + current);
-        */
-        return 1;
+        return current;
     }
 
     /**
@@ -26,7 +29,7 @@ public class Bank {
      * @return the balance of the given account
      */
     public int getBalance(int accountNumber) {
-        return 0;
+        return accounts.get(accountNumber);
     }
 
     /**
@@ -38,13 +41,8 @@ public class Bank {
      * @return if the transaction was executed successfully
      */
     public boolean deposit(int accountNumber, int amount) {
-        /*
-        System.out.print("Enter deposit amount: ");
-        int amount = scanner.nextInt();
-        int balance = accounts.get(current);
+        int balance = accounts.get(accountNumber);
         accounts.put(current, balance + amount);
-        */
-
         return true;
     }
 
@@ -56,18 +54,12 @@ public class Bank {
      * @return whether the amount was approved or not
      */
     public boolean authorizeLoan(int accountNumber, int loanAmount) {
-        /*
-        System.out.print("Enter loan amount: ");
-        
-        int loanAmmount = scanner.nextInt();
-        int balance = accounts.get(current);
-
-        if (balance >= loanAmmount / 2)
-            System.out.println("Your loan is approved");
-        else
-            System.out.println("Your loan is denied");
-        */
-        return true;
+        int balance = accounts.get(accountNumber);
+        if (balance >= loanAmount / 2) {    
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -75,26 +67,25 @@ public class Bank {
      * @return whether the interest payment process was successful or not
      */
     public boolean payInterest() {
-        /*
         Set<Integer> accountIndetifiers = accounts.keySet();
+        double interestRate = 0.01;
         for (int indetifier : accountIndetifiers) {
             int balance = accounts.get(indetifier);
             int newbalance = (int) (balance * (1 + interestRate));
             accounts.put(indetifier, newbalance);
         }
-        */
-        return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        /*
         Set<Integer> accountIndetifiers = accounts.keySet();
-        System.out.println("The bank has " + accountIndetifiers.size() + " accounts.");
-        for (int indentifier : accountIndetifiers)
-            System.out.println("\tAccount " + indentifier + ": balance=" + accounts.get(indentifier));
+        String message;
+        message = "The bank has " + accountIndetifiers.size() + " accounts.";
+        for (int indentifier : accountIndetifiers) {
+            message = message +  "\tAccount " + indentifier + ": balance=" + accounts.get(indentifier);
+        }
             
-        */
-        return "";
+        return message;
     }
 }
