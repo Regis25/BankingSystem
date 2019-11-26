@@ -1,100 +1,86 @@
 package org.jalasoft;
 
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Bank
  */
 public class Bank {
 
-    
+    /**
+     * Key: represent the account number
+     * Value: represent the balance
+     */
+    private HashMap<Integer, BankAccount> accounts;
+
+    private int nextAccount;
+    private double interestRate;
+    private BankAccount bankAccount;
+
+    public Bank() {
+        accounts = new HashMap<>();
+        nextAccount = 0;
+        interestRate = 0.01;
+    }
+
     /**
      * Create a new account and assign it an account number and sets the balance to 0
      * 
-     * @return the account number
+     * @return The account number
      */
-    public int newAccount() {
-        /*
-        current = nextAccount++;
-        accounts.put(current, 0);
-        System.out.println("Your new account number is " + current);
-        */
-        return 1;
+    public int newAccount(AccountOrigin accountOrigin) {
+        int currentAccount = nextAccount++;
+        bankAccount = new BankAccount(currentAccount, accountOrigin);
+        accounts.put(currentAccount, bankAccount);    
+        return currentAccount;
     }
 
     /**
-     * Return the current balance of a given account
-     * @param accountNumber the account where the balance will be checked
-     * @return the balance of the given account
-     */
-    public int getBalance(int accountNumber) {
-        return 0;
-    }
-
-    /**
-     * This increases the amount of balance in a given account
+     * Given an account number it will search for the BankAccount instance
+     *  - If the accountNumber does not exist it wil return 'null' 
      * 
-     * @param accountNumber the account where the amount will be deposited
-     * @param amount the amount of money that will increase the balance
+     * TODO: Analyse NullObjectPattern to avoid nulls
      * 
-     * @return if the transaction was executed successfully
+     * @param accountNumber the account number to find the BankAccountInstance
+     * @return a instance of BankAccount
      */
-    public boolean deposit(int accountNumber, int amount) {
-        /*
-        System.out.print("Enter deposit amount: ");
-        int amount = scanner.nextInt();
-        int balance = accounts.get(current);
-        accounts.put(current, balance + amount);
-        */
-
-        return true;
+    public BankAccount getBankAccount(int accountNumber) {
+        return accounts.get(accountNumber);
     }
 
     /**
-     * Verify if the amount requested can be assigned to a given account based on its current balance
+     * This method deposit a certain amount of money to all accounts based on a
+     * interest rate
      * 
-     * @param accountNumber the account that we will verify on
-     * @param loanAmount the requested amount to be verified
-     * @return whether the amount was approved or not
-     */
-    public boolean authorizeLoan(int accountNumber, int loanAmount) {
-        /*
-        System.out.print("Enter loan amount: ");
-        
-        int loanAmmount = scanner.nextInt();
-        int balance = accounts.get(current);
-
-        if (balance >= loanAmmount / 2)
-            System.out.println("Your loan is approved");
-        else
-            System.out.println("Your loan is denied");
-        */
-        return true;
-    }
-
-    /**
-     * This method deposit a certain amount of money to all accounts based on a interest rate
      * @return whether the interest payment process was successful or not
+     * 
+     * TODO: Implementation is very unefficient
      */
     public boolean payInterest() {
-        /*
-        Set<Integer> accountIndetifiers = accounts.keySet();
-        for (int indetifier : accountIndetifiers) {
-            int balance = accounts.get(indetifier);
-            int newbalance = (int) (balance * (1 + interestRate));
-            accounts.put(indetifier, newbalance);
+        Set<Integer> accountNumbers = accounts.keySet();
+        
+        for (int accountNumber : accountNumbers) {
+            bankAccount = accounts.get(accountNumber);
+            int newBalance = (int) (bankAccount.getBalance() * (1 + interestRate));
+            bankAccount.deposit(newBalance);
+            accounts.put(accountNumber, bankAccount);
         }
-        */
-        return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        /*
-        Set<Integer> accountIndetifiers = accounts.keySet();
-        System.out.println("The bank has " + accountIndetifiers.size() + " accounts.");
-        for (int indentifier : accountIndetifiers)
-            System.out.println("\tAccount " + indentifier + ": balance=" + accounts.get(indentifier));
-            
-        */
-        return "";
-    }
+        StringBuilder builder = new StringBuilder();
+        Set<Integer> accountNumbers = accounts.keySet();
+        builder.append("The bank has ").append(accountNumbers.size()).append(" accounts.");
+        for (int accountNumber : accountNumbers) {
+            builder
+                .append(System.lineSeparator())
+                .append("\tAccount ").append(accountNumber)
+                .append(": balance=").append(accounts.get(accountNumber).getBalance());
+        }
+
+        return builder.toString();
+    }  
 }
