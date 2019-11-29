@@ -7,6 +7,7 @@ import java.util.Set;
  * Bank
  */
 public class Bank {
+<<<<<<< HEAD
 
     private HashMap<Integer, BankAccount> accounts;
     private int nextAccount;
@@ -70,6 +71,68 @@ public class Bank {
      */
     public double getInterestRate() {
         return interestRate;
+=======
+
+    /**
+     * Key: represent the account number
+     * Value: represent the balance
+     */
+    private HashMap<Integer, BankAccount> accounts;
+
+    private int nextAccount;
+    private double interestRate;
+    private BankAccount bankAccount;
+
+    public Bank() {
+        accounts = new HashMap<>();
+        nextAccount = 0;
+        interestRate = 0.01;
+    }
+
+    /**
+     * Create a new account and assign it an account number and sets the balance to 0
+     * 
+     * @return The account number
+     */
+    public int newAccount(AccountOrigin accountOrigin) {
+        int currentAccount = nextAccount++;
+        bankAccount = new BankAccount(currentAccount, accountOrigin);
+        accounts.put(currentAccount, bankAccount);    
+        return currentAccount;
+    }
+
+    /**
+     * Given an account number it will search for the BankAccount instance
+     *  - If the accountNumber does not exist it wil return 'null' 
+     * 
+     * TODO: Analyse NullObjectPattern to avoid nulls
+     * 
+     * @param accountNumber the account number to find the BankAccountInstance
+     * @return a instance of BankAccount
+     */
+    public BankAccount getBankAccount(int accountNumber) {
+        return accounts.get(accountNumber);
+    }
+
+    /**
+     * This method deposit a certain amount of money to all accounts based on a
+     * interest rate
+     * 
+     * @return whether the interest payment process was successful or not
+     * 
+     * TODO: Implementation is very unefficient
+     */
+    public boolean payInterest() {
+        Set<Integer> accountNumbers = accounts.keySet();
+        
+        for (int accountNumber : accountNumbers) {
+            bankAccount = accounts.get(accountNumber);
+            int newBalance = (int) (bankAccount.getBalance() * (1 + interestRate));
+            bankAccount.deposit(newBalance);
+            accounts.put(accountNumber, bankAccount);
+        }
+        return true;
+>>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
     }
 
     @Override
@@ -81,7 +144,11 @@ public class Bank {
             builder
                 .append(System.lineSeparator())
                 .append("\tAccount ").append(accountNumber)
+<<<<<<< HEAD
                 .append(": balance = ").append(accounts.get(accountNumber).getBalance());
+=======
+                .append(": balance=").append(accounts.get(accountNumber).getBalance());
+>>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
         }
 
         return builder.toString();

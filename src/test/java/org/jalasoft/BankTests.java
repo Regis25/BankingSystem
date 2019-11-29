@@ -16,10 +16,17 @@ public class BankTests {
         Bank bank = new Bank();
         
         //Act
+<<<<<<< HEAD
         int accountZero = bank.newAccount();
         int accountOne = bank.newAccount();
         int accountTwo = bank.newAccount();
         int accountThree = bank.newAccount();
+=======
+        int accountZero = bank.newAccount(AccountOrigin.FOREIGN);
+        int accountOne = bank.newAccount(AccountOrigin.LOCAL);
+        int accountTwo = bank.newAccount(AccountOrigin.FOREIGN);
+        int accountThree = bank.newAccount(AccountOrigin.LOCAL);
+>>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
         
         //Assert
         assertEquals(0, accountZero);
@@ -29,6 +36,7 @@ public class BankTests {
     }
 
     @Test
+<<<<<<< HEAD
     public void createDefaultNewAccount() {
         //Arrange
         Bank bank = new Bank();
@@ -87,5 +95,17 @@ public class BankTests {
         
         //Act & Assert
         assertDoesNotThrow(() -> bank.payInterest());
+=======
+    public void getAccountGivenTheAccountNumber() {
+        //Arrange
+        Bank bank = new Bank();
+        int accountZero = bank.newAccount(AccountOrigin.FOREIGN);
+        
+        //Act
+        BankAccount accountOne = bank.getBankAccount(accountZero);
+        
+        //Assert
+        assertEquals(accountZero, accountOne.getAccountNumber());
+>>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
     }
 }
