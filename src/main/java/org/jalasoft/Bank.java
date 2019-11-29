@@ -7,85 +7,83 @@ import java.util.Set;
  * Bank
  */
 public class Bank {
-    private int current;
-    private int nextAccount;
 
-    private HashMap<Integer, Integer> accounts = new HashMap<>();
-    
-    /**
-     * Create a new account and assign it an account number and sets the balance to 0
-     * 
-     * @return the account number
-     */
-    public int newAccount() {
-        current = nextAccount++;
-        accounts.put(current, 0);
-        return current;
+    private HashMap<Integer, BankAccount> accounts;
+    private int nextAccount;
+    private double interestRate;
+
+    public Bank() {
+        accounts = new HashMap<>();
+        nextAccount = 0;
+        interestRate = 0.01;
     }
 
     /**
-     * Return the current balance of a given account
-     * @param accountNumber the account where the balance will be checked
-     * @return the balance of the given account
+     * Create a new account and assign it an account number and sets the balance to 0
+     * 
+     * @return The account number
      */
-    public int getBalance(int accountNumber) {
+    public int newAccount() {
+        return newAccount(AccountOrigin.LOCAL);
+    }
+
+    /**
+     * Create a new account with a given origin and assign it an account number and sets the balance to 0
+     * 
+     * @param origin the origin of the account
+     * @return The account number
+     */
+    public int newAccount(AccountOrigin origin) {
+        BankAccount newBankAccount = new BankAccount(nextAccount++, origin);
+        accounts.put(newBankAccount.getAccountNumber(), newBankAccount);    
+        return newBankAccount.getAccountNumber();
+    }
+
+    /**
+     * Given an account number it will search for the BankAccount instance
+     *  - If the accountNumber does not exist it wil return 'null' 
+     * 
+     * TODO: Analyse NullObjectPattern to avoid nulls
+     * 
+     * @param accountNumber the account number to find the BankAccountInstance
+     * @return a instance of BankAccount
+     */
+    public BankAccount getBankAccount(int accountNumber)  {    
         return accounts.get(accountNumber);
     }
 
     /**
-     * This increases the amount of balance in a given account
-     * 
-     * @param accountNumber the account where the amount will be deposited
-     * @param amount the amount of money that will increase the balance
-     * 
-     * @return if the transaction was executed successfully
+     * This method deposit a certain amount of money to all accounts based on a
+     * interest rate
      */
-    public boolean deposit(int accountNumber, int amount) {
-        int balance = accounts.get(accountNumber);
-        accounts.put(current, balance + amount);
-        return true;
-    }
-
-    /**
-     * Verify if the amount requested can be assigned to a given account based on its current balance
-     * 
-     * @param accountNumber the account that we will verify on
-     * @param loanAmount the requested amount to be verified
-     * @return whether the amount was approved or not
-     */
-    public boolean authorizeLoan(int accountNumber, int loanAmount) {
-        int balance = accounts.get(accountNumber);
-        if (balance >= loanAmount / 2) {    
-            return true;
-        } else {
-            return false;
+    public void payInterest() {
+        for(BankAccount bankAccount : accounts.values()) {
+            int interestToPay = (int) (bankAccount.getBalance() * interestRate);
+            if (interestToPay > 0) {
+                bankAccount.deposit(interestToPay);
+            }
         }
     }
 
     /**
-     * This method deposit a certain amount of money to all accounts based on a interest rate
-     * @return whether the interest payment process was successful or not
+     * @return the interestRate which will help to calculate the interest to pay
      */
-    public boolean payInterest() {
-        Set<Integer> accountIndetifiers = accounts.keySet();
-        double interestRate = 0.01;
-        for (int indetifier : accountIndetifiers) {
-            int balance = accounts.get(indetifier);
-            int newbalance = (int) (balance * (1 + interestRate));
-            accounts.put(indetifier, newbalance);
-        }
-        return true;
+    public double getInterestRate() {
+        return interestRate;
     }
 
     @Override
     public String toString() {
-        Set<Integer> accountIndetifiers = accounts.keySet();
-        StringBuilder message = new StringBuilder();
-        message.append("The bank has " + accountIndetifiers.size() + " accounts.");
-        for (int indentifier : accountIndetifiers) {
-            message.append("\tAccount " + indentifier + ": balance=" + accounts.get(indentifier));
+        StringBuilder builder = new StringBuilder();
+        Set<Integer> accountNumbers = accounts.keySet();
+        builder.append("The bank has ").append(accountNumbers.size()).append(" accounts.");
+        for (int accountNumber : accountNumbers) {
+            builder
+                .append(System.lineSeparator())
+                .append("\tAccount ").append(accountNumber)
+                .append(": balance = ").append(accounts.get(accountNumber).getBalance());
         }
-            
-        return message.toString();
-    }
+
+        return builder.toString();
+    }  
 }
