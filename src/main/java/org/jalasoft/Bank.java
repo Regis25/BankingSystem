@@ -7,7 +7,6 @@ import java.util.Set;
  * Bank
  */
 public class Bank {
-<<<<<<< HEAD
 
     private HashMap<Integer, BankAccount> accounts;
     private int nextAccount;

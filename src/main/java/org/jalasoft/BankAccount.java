@@ -8,28 +8,17 @@ public class BankAccount {
     private int accountNumber;
     private AccountOrigin accountOrigin;
     private int balance;
-<<<<<<< HEAD
 
     /**
      * Create a new account with 0 balance
      * 
      * @param accountNumber the unique identifier for a bank account
      * @param accountOrigin represent where the account was created
-=======
- 
-    /**
-     * @param accountNumber the unique identifier for a bank account
-     * @param AccountOrigin represent where the account was created
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
      */
     public BankAccount(int accountNumber, AccountOrigin accountOrigin) {
         this.accountNumber = accountNumber;
         this.accountOrigin = accountOrigin;
-<<<<<<< HEAD
         this.balance = 0;
-=======
-        balance = 0;
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
     }
 
     /**
@@ -57,7 +46,6 @@ public class BankAccount {
 
     /**
      * This increase the amount of the balance applying the following restrictions:
-<<<<<<< HEAD
      *  The amount must be greater than 0
      * 
      * @param amount the amount that will be increased
@@ -98,42 +86,6 @@ public class BankAccount {
      */
     public boolean hasEnoughCollateral(int amount) {
         return amount > 0 && balance >= amount / 2;
-=======
-     * 
-     * @param amount the amount that will be increased
-     */
-    public boolean deposit(int amount) {
-        balance = balance + amount;
-        return true;
-    }
-
-    /**
-     * Will check if the amount can be supported by the current balance
-     * 
-     * <<explain how the check will be performed>>
-     * 
-     * @param amount the amount to check
-     * @return wether the amount is supported or not
-     */
-    public boolean hasEnoughCollateral(int amount) {
-        return balance >= (amount / 2);
-    }
-
-
-    /**
-     * This decrease the amount of the balance applying the following restrictions:
-     * - The amount cannot be greater than the current balance
-     * 
-     * @param amount the amount that will be decrease
-     */
-    public boolean withdraw(int amount) {
-        if (balance >= amount) {
-            balance = balance - amount;
-            return true;
-        } else {
-            return false;
-        }
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
     }
 
     /**
@@ -150,11 +102,4 @@ public class BankAccount {
     public boolean changeAccount(AccountOrigin AccountOrigin) {
         return false;
     }
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
 }

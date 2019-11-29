@@ -68,17 +68,9 @@ public class BankClient {
     }
 
     private void newAccount() {
-<<<<<<< HEAD
         System.out.println("Specify the origin of the account (Local, Rural, Foreign): ");
         String accountOriginAsString = scanner.next();        
         currentAccount = bankServices.newAccount(accountOriginAsString);
-=======
-        int accountNumber = bankServices.newLocalAccount(); //delegates the work to the appropriate class
-
-        // Own logic
-
-        currentAccount = accountNumber;
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
         System.out.println("Your new account number is: " + currentAccount);
     }
 
@@ -112,14 +104,11 @@ public class BankClient {
 
     private void addInterest() {
         bankServices.payInterest();
-<<<<<<< HEAD
     }
     
     private void withdraw() {
         System.out.print("Enter withdraw amount: ");
         int amount = scanner.nextInt();
         bankServices.withdraw(currentAccount, amount);
-=======
->>>>>>> ce55ee14502f6589229efe00349d4b8a859312a2
     }
 }
