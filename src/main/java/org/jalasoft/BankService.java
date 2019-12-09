@@ -6,12 +6,11 @@ package org.jalasoft;
 public class BankService {
 
     private Bank bank;
-    private BankAccount bankAccount;
 
     public BankService() {
-        bank = new Bank();
+        this.bank = new Bank();
     }
-
+    
     /**
      * Ask a given to account to bank and then grabs the balance
      * 
@@ -19,7 +18,8 @@ public class BankService {
      * @return balance of a given account
      */
     public int getBalance(int accountNumber) {
-        return bank.getBankAccount(accountNumber).getBalance();
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+        return bankAccount.getBalance();
     }
 
     /**
@@ -27,8 +27,27 @@ public class BankService {
      * 
      * @return The account number
      */
-    public int newLocalAccount() {
-        return bank.newAccount(AccountOrigin.LOCAL);
+    public int newAccount() {
+        return bank.newAccount();
+    }
+
+    /**
+     * Create a new account and assign it an account number and sets the balance to 0
+     * 
+     * @param accountOrigin the account origin that will be assigned to the account
+     * @return The account number
+     */
+    public int newAccount(String accountOrigin) {
+        // 1.- if the accountOrigin is empty we will create a local
+        if (accountOrigin.equals("")) {
+            return bank.newAccount();
+        }
+        
+        // 2.- if the accountOrigin does not exist we will throw an exception
+        AccountOrigin accountOriginCalculated = AccountOrigin.valueOf(accountOrigin);
+
+        
+        return bank.newAccount(accountOriginCalculated);
     }
 
     /**
@@ -37,12 +56,10 @@ public class BankService {
      * @param accountNumber the account where the amount will be deposited
      * @param amount        the amount of money that will increase the balance
      * 
-     * @return if the transaction was executed successfully
      */
-    public boolean deposit(int accountNumber, int amount) {
-        //accounts.put(accountNumber, accounts.get(accountNumber) + amount);
-        bankAccount = bank.getBankAccount(accountNumber);
-        return bankAccount.deposit(amount);
+    public void deposit(int accountNumber, int amount) {
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+        bankAccount.deposit(amount);
     }
 
 
@@ -55,18 +72,19 @@ public class BankService {
      * @return whether the amount was approved or not
      */
     public boolean authorizeLoan(int accountNumber, int loanAmount) {
-        bankAccount = bank.getBankAccount(accountNumber);
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+
+        //Intermediate checks
+
         return bankAccount.hasEnoughCollateral(loanAmount);
     }
 
     /**
      * This method deposit a certain amount of money to all accounts based on a
      * interest rate
-     * 
-     * @return whether the interest payment process was successful or not
      */
-    public boolean payInterest() { 
-        return bank.payInterest();
+    public void payInterest() { 
+        bank.payInterest();
     }
 
     /**
@@ -75,5 +93,20 @@ public class BankService {
      */
     public String getBankInformation() {
         return bank.toString();
+    }
+
+    /**
+     * Decreases the amount of balance of the account.
+     * 
+     * @param accountNumber - the account where the amount will be withdraw
+     * @param amount - The amount of money that will be withdraw
+     */
+    public void withdraw(int accountNumber, int amount) {
+        try {
+            BankAccount bankAccount  = bank.getBankAccount(accountNumber);
+            bankAccount.withdraw(amount);
+        } catch(ArithmeticException exception) {
+            System.out.println("The amount is bigger than your balance, try another amount.");
+        }
     }
 }
